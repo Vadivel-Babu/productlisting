@@ -5,10 +5,12 @@ import {
   TextField,
   Grid,
   Pagination,
+  Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import CardList from "./CardList";
 import CardLoading from "./CardLoading";
+import { toast } from "react-toastify";
 
 const AllItems = () => {
   const [text, setText] = useState("");
@@ -33,7 +35,7 @@ const AllItems = () => {
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
-      console.log(error);
+      toast.error(error.message);
     }
   }
 
@@ -71,11 +73,18 @@ const AllItems = () => {
             ))
           )}
         </Grid>
-        <Pagination
-          count={items?.length / 10}
-          page={page}
-          onChange={handleChange}
-        />
+        {items?.length === 0 && (
+          <Typography variant="h2" component="h1">
+            No Product Found
+          </Typography>
+        )}
+        {items?.length >= 10 && (
+          <Pagination
+            count={items?.length / 10}
+            page={page}
+            onChange={handleChange}
+          />
+        )}
       </Stack>
     </Container>
   );
